@@ -13,7 +13,7 @@ module tensionerExtrusion() {
     intersection(){
         minkowski() {
             linear_extrude(height=4)gasket();
-            sphere(r=2,$fn=20);
+            sphere(r=2,$fn=50);
         }
         translate([0,0,20])cube([500,500,40],center=true);
     }
@@ -34,6 +34,24 @@ module gasketMold() {
         linear_extrude()gasket(8,5);
         translate([0,0,-5])linear_extrude()hull()gasket(1,0);
     }
+}
+module moldTop() {
+    difference() {
+        hull()gasket(30,11);
+        gasket(8,5);
+        moldHoles();
+    }
+}
+module moldBottom() {
+    difference() {
+        hull()gasket(30,11);
+        moldHoles();
+    }
+}
+module moldHoles() {
+   for(i=[-1,1])for(j=[-1,1])translate([i*20,j*20])circle(r=1.5);
+   for(i=[-1,1])for(j=[-1,1])translate([i*65,j*32])circle(r=1.5);
+   //for(i=[-1,1])for(j=[-1,1])translate([i*32,j*56])circle(r=1.5);
 }
 module pla_vat() {
     linear_extrude(height=15)gasket(7,5);
@@ -68,4 +86,6 @@ tensioner();
 gasketMold();
 pla_vat();
 top();
-middle();
+!middle();
+moldTop();
+moldBottom();
