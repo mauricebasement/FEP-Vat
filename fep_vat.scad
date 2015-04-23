@@ -86,6 +86,6 @@ tensioner();
 gasketMold();
 pla_vat();
 top();
-!middle();
+middle();
 moldTop();
 moldBottom();
