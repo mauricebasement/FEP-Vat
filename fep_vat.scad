@@ -50,6 +50,14 @@ module top() {
         holes();
     }
 }
+module middle() {
+    difference() {
+        square([125,100],center=true);
+        hull()gasket(5,4);
+        platformHoles();
+        holes();
+    }
+}
 module holes(x=57,y=44) {
     for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])circle(r=1.5);
     for(i=[-1,1])translate([i*x,0])circle(r=1.5);
@@ -60,3 +68,4 @@ tensioner();
 gasketMold();
 pla_vat();
 top();
+middle();
