@@ -30,7 +30,7 @@ module gasket(o1=2.5,o2=2) {
 }
 module gasketMold() {
     difference() {
-        translate([0,0,-2])linear_extrude(height=4)hull()gasket(12,11);
+        translate([0,0,-1])linear_extrude(height=2)hull()gasket(12,11);
         linear_extrude()gasket(8,5);
         translate([0,0,-5])linear_extrude()hull()gasket(1,0);
     }
@@ -54,12 +54,18 @@ module moldHoles() {
    //for(i=[-1,1])for(j=[-1,1])translate([i*32,j*56])circle(r=1.5);
 }
 module pla_vat() {
-    linear_extrude(height=15)gasket(7,5);
-    translate([0,0,-1])linear_extrude(height=1)gasket(5,4);
-    linear_extrude(height=1)difference() {
-        gasket(15,5);
-        holes();
-        platformHoles();
+    linear_extrude(height=15)gasket(7,4);
+    translate([0,0,-1])linear_extrude(height=2)gasket(5,4);
+    difference() {
+        hull() {
+            translate([0,0,6])linear_extrude(height=1)gasket(15,5);
+            translate([0,0,14])linear_extrude(height=1)gasket(7,4);
+        }
+        linear_extrude() {
+            holes();
+            platformHoles();
+            hull()gasket(4,1);
+        }
     }
 }
 module top() {
@@ -84,9 +90,9 @@ module holes(x=57,y=44) {
     for(i=[-1,1])translate([0,i*y])circle(r=1.5);
 }
 
-!tensioner();    
+tensioner();    
 gasketMold();
-pla_vat();
+!pla_vat();
 top();
 middle();
 moldTop();
