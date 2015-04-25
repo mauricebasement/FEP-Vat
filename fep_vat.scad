@@ -57,10 +57,7 @@ module pla_vat() {
     linear_extrude(height=15)gasket(7,4);
     translate([0,0,-1])linear_extrude(height=2)gasket(5,4);
     difference() {
-        hull() {
-            translate([0,0,6])linear_extrude(height=1)gasket(15,5);
-            translate([0,0,14])linear_extrude(height=1)gasket(7,4);
-        }
+        translate([0,0,6])linear_extrude(height=9)gasket(20,5);
         linear_extrude() {
             holes();
             platformHoles();
@@ -92,7 +89,7 @@ module holes(x=57,y=44) {
 
 tensioner();    
 gasketMold();
-!pla_vat();
+rotate([0,180,0])pla_vat();
 top();
 middle();
 moldTop();
