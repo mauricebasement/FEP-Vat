@@ -12,7 +12,7 @@ module tensionerBase() {
 module tensionerExtrusion() {
     intersection(){
         minkowski() {
-            linear_extrude(height=8)gasket();
+            linear_extrude(height=12)gasket();
             sphere(r=2,$fn=50);
         }
         translate([0,0,20])cube([500,500,40],center=true);
@@ -83,9 +83,9 @@ module holes(x=57,y=44) {
     for(i=[-1,1])translate([0,i*y])circle(r=1.5);
 }
 
-tensioner();    
+!tensioner();    
 gasketMold();
-!pla_vat();
+pla_vat();
 top();
 middle();
 moldTop();
