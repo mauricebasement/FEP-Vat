@@ -49,13 +49,14 @@ module moldBottom() {
     }
 }
 module moldHoles() {
-   for(i=[-1,1])for(j=[-1,1])translate([i*20,j*20])circle(r=1.5);
+   for(i=[-1,1])for(j=[-1,1])translate([i*5,j*5])circle(r=1.5);
    for(i=[-1,1])for(j=[-1,1])translate([i*65,j*32])circle(r=1.5);
    //for(i=[-1,1])for(j=[-1,1])translate([i*32,j*56])circle(r=1.5);
 }
 module pla_vat() {
     linear_extrude(height=15)gasket(7,5);
-    linear_extrude(height=0.5)difference() {
+    translate([0,0,-1])linear_extrude(height=1)gasket(5,4);
+    linear_extrude(height=1)difference() {
         gasket(15,5);
         holes();
         platformHoles();
