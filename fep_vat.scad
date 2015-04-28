@@ -32,52 +32,43 @@ module gasket(o1=2.5,o2=2) {
 }
 module gasketMold() {
     difference() {
-        translate([0,0,-1])linear_extrude(height=2)hull()gasket(12,11);
+        translate([0,0,-1])linear_extrude(height=2)offset(r=12)platformSquares();
         linear_extrude()gasket(8,5);
-        translate([0,0,-5])linear_extrude()hull()gasket(1,0);
+        translate([0,0,-5])linear_extrude()offset(r=1)platformSquares();
     }
 }
 module moldTop() {
     difference() {
-        hull()gasket(30,11);
+        square([140,100],center=true);
         gasket(8,5);
         moldHoles();
     }
 }
 module moldBottom() {
     difference() {
-        hull()gasket(30,11);
+        square([140,100],center=true);
         moldHoles();
     }
 }
 module moldHoles() {
    for(i=[-1,1])for(j=[-1,1])translate([i*5,j*5])circle(r=1.5);
-   for(i=[-1,1])for(j=[-1,1])translate([i*65,j*32])circle(r=1.5);
+   for(i=[-1,1])for(j=[-1,1])translate([i*65,j*45])circle(r=1.5);
 }
 module pla_vat() {
-    linear_extrude(height=15)gasket(7,4);
-    translate([0,0,-1])linear_extrude(height=2)gasket(5,4);
     difference() {
-        translate([0,0,6])linear_extrude(height=9)square([125,100],center=true);
+        linear_extrude(height=9)square([125,100],center=true);
+        linear_extrude(height=1.5)gasket(8,5);
         linear_extrude() {
             holes();
             platformHoles();
-            hull()gasket(4,1);
+            offset(r=4)platformSquares();
         }
-    }
-}
-module top() {
-    difference() {
-        square([125,100],center=true);
-        hull()gasket(7.2,5);
-        platformHoles();
-        holes();
     }
 }
 module middle() {
     difference() {
         square([125,100],center=true);
-        hull()gasket(5,4);
+        offset(r=4)platformSquares();
         platformHoles();
         holes();
     }
@@ -88,10 +79,9 @@ module holes(x=57,y=44) {
     for(i=[-1,1])translate([0,i*y])circle(r=1.5*tolerance);
 }
 
-!tensioner();    
+tensioner();    
 gasketMold();
-rotate([0,180,0])pla_vat();
-top();
-middle();
 moldTop();
-moldBottom();
+!moldBottom();
+rotate([0,180,0])pla_vat();
+middle();
