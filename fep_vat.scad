@@ -24,7 +24,7 @@ module tensioner() {
     tensionerBase();
     tensionerExtrusion();
 }
-module gasket(o1=2.5,o2=2) {
+module gasket(o1=10,o2=5) {
     difference() {
         offset(r=o1)platformSquares();
         offset(r=o2)platformSquares();
@@ -33,14 +33,14 @@ module gasket(o1=2.5,o2=2) {
 module gasketMold() {
     difference() {
         translate([0,0,-1])linear_extrude(height=2)offset(r=12)platformSquares();
-        linear_extrude()gasket(8,5);
+        linear_extrude()gasket();
         translate([0,0,-5])linear_extrude()offset(r=1)platformSquares();
     }
 }
 module moldTop() {
     difference() {
         square([140,100],center=true);
-        gasket(8,5);
+        gasket();
         moldHoles();
     }
 }
@@ -57,7 +57,7 @@ module moldHoles() {
 module pla_vat() {
     difference() {
         linear_extrude(height=9)square([125,100],center=true);
-        linear_extrude(height=1.5)gasket(8,5);
+        linear_extrude(height=1.5)gasket(10,5);
         linear_extrude() {
             holes();
             platformHoles();
