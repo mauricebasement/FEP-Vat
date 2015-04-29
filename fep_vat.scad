@@ -57,7 +57,7 @@ module moldHoles() {
 module pla_vat() {
     difference() {
         linear_extrude(height=9)square([125,100],center=true);
-        linear_extrude(height=1.5)gasket(10,5);
+        linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
             platformHoles();
@@ -73,7 +73,7 @@ module middle() {
         holes();
     }
 }
-module holes(x=57,y=44) {
+module holes(x=57,y=46) {
     for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])circle(r=1.5*tolerance);
     for(i=[-1,1])translate([i*x,0])circle(r=1.5*tolerance);
     for(i=[-1,1])translate([0,i*y])circle(r=1.5*tolerance);
@@ -82,6 +82,6 @@ module holes(x=57,y=44) {
 tensioner();    
 gasketMold();
 moldTop();
-!moldBottom();
-rotate([0,180,0])pla_vat();
+moldBottom();
+!rotate([0,180,0])pla_vat();
 middle();
