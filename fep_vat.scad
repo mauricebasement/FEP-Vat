@@ -35,6 +35,27 @@ module gasket(o1=10,o2=5) {
 }
 
 //Gasket-Mold
+module bigMoldTop() {
+    difference() {
+        square([120,100],center=true);
+        gasket();
+        bigMoldHoles();
+    }
+}
+module bigMoldBottom() {
+    difference() {
+        square([140,100],center=true);
+        bigMoldHoles();
+    }
+}
+module bigMoldHoles() {
+   for(i=[0,180])rotate([0,0,i])translate([15,15])circle(r=1.5);
+   for(i=[-1,1])for(j=[-1,1])translate([i*54,j*44])circle(r=1.5);
+}
+module moldArranger(x=4,y=2,xt=112,yt=92) {
+    for(i=[0:x])
+        for(j=[0:y])translate([i*xt,j*yt])children();
+}
 module moldTop() {
     difference() {
         square([140,100],center=true);
@@ -52,7 +73,7 @@ module moldHoles() {
    for(i=[-1,1])for(j=[-1,1])translate([i*15,j*15])circle(r=1.5);
    for(i=[-1,1])for(j=[-1,1])translate([i*65,j*45])circle(r=1.5);
 }
-
+        
 //PLA-Vat
 module pla_vat() {
     rotate([0,180,0])difference() {
@@ -95,4 +116,6 @@ moldTop();
 moldBottom();
 pla_vat();
 middle();
+moldArranger()bigMoldTop();
+!moldArranger()bigMoldBottom();
 
