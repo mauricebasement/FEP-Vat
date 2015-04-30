@@ -1,4 +1,4 @@
-$fn=50;
+$fn=100;
 
 module platformSquare() {
     import("platformSquare.dxf");
