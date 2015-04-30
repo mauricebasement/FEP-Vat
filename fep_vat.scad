@@ -60,7 +60,7 @@ module pla_vat() {
         linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
-            platformHoles();
+            platformHoles(r=2.5);
             offset(r=4)platformSquare();
         }
     }
@@ -73,12 +73,12 @@ module middle() {
             square([125,100],center=true);
             offset(r=4)platformSquare();
             platformHolesTr()circle(r=5);
-            holes(r=3.2,tolerance=1,fn=6);
+            holes(r=3.2,fn=6);
         }
         translate([0,0,3])linear_extrude(height=2)difference() {
             square([125,100],center=true);
             offset(r=4)platformSquare();
-            platformHoles();
+            platformHoles(r=2.5);
             holes();
         }
     }
