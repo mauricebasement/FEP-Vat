@@ -2,6 +2,7 @@ $fn=50;
 use<square.scad>;
 
 tolerance = 1.2;
+
 module platformHolesTr(x=56.55,y=23.75) {
     for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])children();
 }
@@ -9,10 +10,7 @@ module platformHolesTr(x=56.55,y=23.75) {
 module platformHoles2() {
     platformHolesTr()circle(r=2);
 }
-difference() {
-platformHoles();
-platformHoles2();
-}
+
 //Tensioner
 module tensionerBase() {
     linear_extrude(height=1.5)difference() {
@@ -34,8 +32,10 @@ module tensioner() {
     tensionerBase();
     tensionerExtrusion();
 }
+
 //Gasket
-module gasket(o1=2.5,o2=2) {
+
+module gasket(o1=10,o2=5) {
     difference() {
         offset(r=o1)platformSquares();
         offset(r=o2)platformSquares();
@@ -44,14 +44,14 @@ module gasket(o1=2.5,o2=2) {
 module gasketMold() {
     difference() {
         translate([0,0,-1])linear_extrude(height=2)offset(r=12)platformSquares();
-        linear_extrude()gasket(8,5);
+        linear_extrude()gasket();
         translate([0,0,-5])linear_extrude()offset(r=1)platformSquares();
     }
 }
 module moldTop() {
     difference() {
         square([140,100],center=true);
-        gasket(8,5);
+        gasket();
         moldHoles();
     }
 }
@@ -69,7 +69,7 @@ module moldHoles() {
 module pla_vat() {
     difference() {
         linear_extrude(height=9)square([125,100],center=true);
-        linear_extrude(height=1.5)gasket(8,5);
+        linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
             platformHoles();
@@ -86,15 +86,17 @@ module middle() {
         holes();
     }
 }
-module holes(x=57,y=44) {
+module holes(x=57,y=46) {
     for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])circle(r=1.5*tolerance);
     for(i=[-1,1])translate([i*x,0])circle(r=1.5*tolerance);
     for(i=[-1,1])translate([0,i*y])circle(r=1.5*tolerance);
 }
 
-*tensioner();    
-*gasketMold();
-*moldTop();
-*moldBottom();
-*rotate([0,180,0])pla_vat();
-*middle();
+
+tensioner();    
+gasketMold();
+moldTop();
+moldBottom();
+rotate([0,180,0])pla_vat();
+middle();
+
