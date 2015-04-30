@@ -1,5 +1,4 @@
 $fn=50;
-tolerance = 1.2;
 
 module platformSquare() {
     import("platformSquare.dxf");
@@ -7,8 +6,8 @@ module platformSquare() {
 module platformHolesTr(x=56.55,y=23.75) {
     for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])children();
 }
-module platformHoles() {
-    platformHolesTr()circle(r=2);
+module platformHoles(r=2) {
+    platformHolesTr()circle(r);
 }
 
 //Tensioner
@@ -16,11 +15,11 @@ module tensioner() {
      linear_extrude(height=1)difference() {
         square([125,80],center=true);
         platformSquare();
-        platformHoles();
+        platformHoles(5);
     }
     intersection(){
         minkowski() {
-            linear_extrude(height=12)gasket(.5,0);
+            linear_extrude(height=6)gasket(.5,0);
             sphere(r=2);
         }
         translate([0,0,20])cube([500,500,40],center=true);
@@ -50,7 +49,7 @@ module moldBottom() {
     }
 }
 module moldHoles() {
-   for(i=[-1,1])for(j=[-1,1])translate([i*5,j*5])circle(r=1.5);
+   for(i=[-1,1])for(j=[-1,1])translate([i*15,j*15])circle(r=1.5);
    for(i=[-1,1])for(j=[-1,1])translate([i*65,j*45])circle(r=1.5);
 }
 
@@ -69,17 +68,25 @@ module pla_vat() {
 
 //Middle
 module middle() {
-    difference() {
-        square([125,100],center=true);
-        offset(r=4)platformSquare();
-        platformHoles();
-        holes();
+    rotate([0,180,0]){
+        linear_extrude(height=3)difference() {
+            square([125,100],center=true);
+            offset(r=4)platformSquare();
+            platformHolesTr()circle(r=5);
+            holes(r=3.2,tolerance=1,fn=6);
+        }
+        translate([0,0,3])linear_extrude(height=2)difference() {
+            square([125,100],center=true);
+            offset(r=4)platformSquare();
+            platformHoles();
+            holes();
+        }
     }
 }
-module holes(x=57,y=46) {
-    for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])circle(r=1.5*tolerance);
-    for(i=[-1,1])translate([i*x,0])circle(r=1.5*tolerance);
-    for(i=[-1,1])translate([0,i*y])circle(r=1.5*tolerance);
+module holes(x=57,y=46,r=1.5,tolerance=1.2,fn=$fn) {
+    for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
+    for(i=[-1,1])translate([i*x,0])circle(r=r*tolerance,$fn=fn);
+    for(i=[-1,1])translate([0,i*y])circle(r=r*tolerance,$fn=fn);
 }
 
 
