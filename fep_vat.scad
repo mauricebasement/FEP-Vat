@@ -1,25 +1,23 @@
 $fn=50;
-use<square.scad>;
-
 tolerance = 1.2;
 
+module platformSquare() {
+    import("platformSquare.dxf");
+}
 module platformHolesTr(x=56.55,y=23.75) {
     for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])children();
 }
-
-module platformHoles2() {
+module platformHoles() {
     platformHolesTr()circle(r=2);
 }
 
 //Tensioner
-module tensionerBase() {
-    linear_extrude(height=1.5)difference() {
+module tensioner() {
+     linear_extrude(height=1)difference() {
         square([125,80],center=true);
-        platformSquares();
+        platformSquare();
         platformHoles();
     }
-}
-module tensionerExtrusion() {
     intersection(){
         minkowski() {
             linear_extrude(height=12)gasket(.5,0);
@@ -28,26 +26,16 @@ module tensionerExtrusion() {
         translate([0,0,20])cube([500,500,40],center=true);
     }
 }
-module tensioner() {
-    tensionerBase();
-    tensionerExtrusion();
-}
 
 //Gasket
-
 module gasket(o1=10,o2=5) {
     difference() {
-        offset(r=o1)platformSquares();
-        offset(r=o2)platformSquares();
+        offset(r=o1)platformSquare();
+        offset(r=o2)platformSquare();
     }
 }
-module gasketMold() {
-    difference() {
-        translate([0,0,-1])linear_extrude(height=2)offset(r=12)platformSquares();
-        linear_extrude()gasket();
-        translate([0,0,-5])linear_extrude()offset(r=1)platformSquares();
-    }
-}
+
+//Gasket-Mold
 module moldTop() {
     difference() {
         square([140,100],center=true);
@@ -65,23 +53,25 @@ module moldHoles() {
    for(i=[-1,1])for(j=[-1,1])translate([i*5,j*5])circle(r=1.5);
    for(i=[-1,1])for(j=[-1,1])translate([i*65,j*45])circle(r=1.5);
 }
+
 //PLA-Vat
 module pla_vat() {
-    difference() {
+    rotate([0,180,0])difference() {
         linear_extrude(height=9)square([125,100],center=true);
         linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
             platformHoles();
-            offset(r=4)platformSquares();
+            offset(r=4)platformSquare();
         }
     }
 }
+
 //Middle
 module middle() {
     difference() {
         square([125,100],center=true);
-        offset(r=4)platformSquares();
+        offset(r=4)platformSquare();
         platformHoles();
         holes();
     }
@@ -94,9 +84,8 @@ module holes(x=57,y=46) {
 
 
 tensioner();    
-gasketMold();
 moldTop();
 moldBottom();
-rotate([0,180,0])pla_vat();
+pla_vat();
 middle();
 
