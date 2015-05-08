@@ -13,13 +13,13 @@ module platformHoles(r=2) {
 //Tensioner
 module tensioner() {
      linear_extrude(height=1)difference() {
-        square([125,80],center=true);
+        square([125,108],center=true);
         platformSquare();
         platformHoles(5);
     }
     intersection(){
         minkowski() {
-            linear_extrude(height=8)gasket(.5,0);
+            linear_extrude(height=10)gasket(.5,0);
             sphere(r=2);
         }
         translate([0,0,20])cube([500,500,40],center=true);
@@ -72,12 +72,12 @@ module moldBottom() {
 module moldHoles() {
    for(i=[-1,1])for(j=[-1,1])translate([i*15,j*15])circle(r=1.5);
    for(i=[-1,1])for(j=[-1,1])translate([i*65,j*45])circle(r=1.5);
-}
-        
+}        
+
 //PLA-Vat
 module pla_vat() {
     rotate([0,180,0])difference() {
-        linear_extrude(height=9)square([125,100],center=true);
+        linear_extrude(height=9)square([125,108],center=true);
         linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
@@ -85,8 +85,32 @@ module pla_vat() {
             offset(r=4)platformSquare();
         }
     }
+    translate([0,0,0])linear_extrude(height=0.4)press();
 }
-
+module top() {
+    difference() {
+        offset(r=0){
+            difference() {
+                square([125,108],center=true);
+                offset(r=11)platformSquare();
+            }
+        }
+        offset(r=0){
+            holes();
+            platformHoles(r=2.75);
+        }
+    }
+}
+module press() {
+    intersection() {
+        rotate([0,0,45])support_raw(x=200,y=200,d=2.8,t=0.4);
+        top();
+    }
+}
+module support_raw(x=20,y=20,d=1.1,t=0.15) {
+    for(i=[-1,1])for(j=[0:d:x/2])translate([i*j,0])square([t,y],center=true);
+    for(i=[-1,1])for(j=[0:d:x/2])translate([0,i*j])square([x,t],center=true);
+}
 //Middle
 module middle() {
     rotate([0,180,0]){
@@ -117,5 +141,4 @@ moldBottom();
 pla_vat();
 middle();
 moldArranger()bigMoldTop();
-!moldArranger()bigMoldBottom();
-
+moldArranger()bigMoldBottom();
