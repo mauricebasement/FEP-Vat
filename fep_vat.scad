@@ -19,7 +19,7 @@ module tensioner() {
     }
     intersection(){
         minkowski() {
-            linear_extrude(height=6)gasket(.5,0);
+            linear_extrude(height=8)gasket(.5,0);
             sphere(r=2);
         }
         translate([0,0,20])cube([500,500,40],center=true);
@@ -60,7 +60,7 @@ module pla_vat() {
         linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
-            platformHoles(r=2.5);
+            platformHoles(r=2.75);
             offset(r=4)platformSquare();
         }
     }
@@ -73,12 +73,12 @@ module middle() {
             square([125,100],center=true);
             offset(r=4)platformSquare();
             platformHolesTr()circle(r=5);
-            holes(r=3.2,fn=6);
+            holes(r=3.1,fn=6);
         }
         translate([0,0,3])linear_extrude(height=2)difference() {
             square([125,100],center=true);
             offset(r=4)platformSquare();
-            platformHoles(r=2.5);
+            platformHoles(r=2.75);
             holes();
         }
     }
