@@ -85,7 +85,7 @@ module pla_vat() {
             offset(r=4)platformSquare();
         }
     }
-    translate([0,0,0])linear_extrude(height=0.4)press();
+    translate([0,0,0])linear_extrude(height=.6)press();
 }
 module top() {
     difference() {
@@ -118,7 +118,7 @@ module middle() {
             square([125,100],center=true);
             offset(r=4)platformSquare();
             platformHolesTr()circle(r=5);
-            holes(r=3.1,fn=6);
+            holes(r=3.4,tolerance=1,fn=6);
         }
         translate([0,0,3])linear_extrude(height=2)difference() {
             square([125,100],center=true);
@@ -129,16 +129,27 @@ module middle() {
     }
 }
 module holes(x=57,y=46,r=1.5,tolerance=1.2,fn=$fn) {
-    for(i=[-1,1])for(j=[-1,1])translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
-    for(i=[-1,1])translate([i*x,0])circle(r=r*tolerance,$fn=fn);
+    for(i=[-1,1])for(j=[-1,1]){
+        translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
+        translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
+        translate([i*x,j*y/2-j*6])circle(r=r*tolerance,$fn=fn);
+    }
     for(i=[-1,1])translate([0,i*y])circle(r=r*tolerance,$fn=fn);
 }
-
+//FEP-Film
+module fepFilm() {
+    difference(){
+        square([125,108],center=true);
+        holes();
+        platformHoles(r=2.75);
+    }
+}
 
 tensioner();    
 moldTop();
 moldBottom();
 pla_vat();
 middle();
+fepFilm();
 moldArranger()bigMoldTop();
 moldArranger()bigMoldBottom();
