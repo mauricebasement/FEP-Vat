@@ -103,7 +103,7 @@ module top() {
 }
 module press() {
     intersection() {
-        rotate([0,0,45])support_raw(x=200,y=200,d=2.8,t=0.4);
+        rotate([0,0,45])support_raw(x=200,y=200,d=2.8,t=0.6);
         top();
     }
 }
