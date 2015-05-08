@@ -132,9 +132,12 @@ module holes(x=57,y=46,r=1.5,tolerance=1.2,fn=$fn) {
     for(i=[-1,1])for(j=[-1,1]){
         translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
         translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
-        translate([i*x,j*y/2-j*6])circle(r=r*tolerance,$fn=fn);
+        translate([i*x,j*y/2-j*8])circle(r=r*tolerance,$fn=fn);
     }
-    for(i=[-1,1])translate([0,i*y])circle(r=r*tolerance,$fn=fn);
+    for(i=[-1,1]){
+        translate([0,i*y])circle(r=r*tolerance,$fn=fn);
+        translate([i*x,0])circle(r=r*tolerance,$fn=fn);
+    }
 }
 //FEP-Film
 module fepFilm() {
