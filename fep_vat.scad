@@ -115,7 +115,7 @@ module support_raw(x=20,y=20,d=1.1,t=0.15) {
 module middle() {
     rotate([0,180,0]){
         linear_extrude(height=3)difference() {
-            square([125,100],center=true);
+            square([125,108],center=true);
             offset(r=4)platformSquare();
             platformHolesTr()circle(r=5);
             holes(r=3.4,tolerance=1,fn=6);
