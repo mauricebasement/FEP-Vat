@@ -19,8 +19,8 @@ module tensioner() {
     }
     intersection(){
         minkowski() {
-            linear_extrude(height=10)gasket(.5,0);
-            sphere(r=2);
+            linear_extrude(height=11)gasket(.1,0);
+            sphere(r=1);
         }
         translate([0,0,20])cube([500,500,40],center=true);
     }
@@ -121,18 +121,23 @@ module middle() {
             holes(r=3.4,tolerance=1,fn=6);
         }
         translate([0,0,3])linear_extrude(height=2)difference() {
-            square([125,100],center=true);
+            square([125,108],center=true);
             offset(r=4)platformSquare();
             platformHoles(r=2.75);
             holes();
         }
-        translate([0,0,3])linear_extrude(height=.6)difference() {
-            press();
-            square([125,100],center=true);
+        translate([0,0,5])linear_extrude(height=.6)difference() {
+            square([125,108],center=true);
+            offset(r=.4)press();
+            offset(r=11)platformSquare();
+                offset(r=0){
+                holes();
+                platformHoles(r=2.75);
+            }
         }
     }
 }
-module holes(x=57,y=46,r=1.5,tolerance=1.2,fn=$fn) {
+module holes(x=57,y=48,r=1.5,tolerance=1.2,fn=$fn) {
     for(i=[-1,1])for(j=[-1,1]){
         translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
         translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
@@ -156,7 +161,7 @@ tensioner();
 moldTop();
 moldBottom();
 pla_vat();
-!middle();
+middle();
 fepFilm();
 moldArranger()bigMoldTop();
 moldArranger()bigMoldBottom();
