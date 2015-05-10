@@ -103,7 +103,7 @@ module top() {
 }
 module press() {
     intersection() {
-        rotate([0,0,45])support_raw(x=200,y=200,d=2.8,t=0.6);
+        rotate([0,0,45])support_raw(x=200,y=200,d=4,t=0.6);
         top();
     }
 }
@@ -125,6 +125,10 @@ module middle() {
             offset(r=4)platformSquare();
             platformHoles(r=2.75);
             holes();
+        }
+        translate([0,0,3])linear_extrude(height=.6)difference() {
+            press();
+            square([125,100],center=true);
         }
     }
 }
@@ -152,7 +156,7 @@ tensioner();
 moldTop();
 moldBottom();
 pla_vat();
-middle();
+!middle();
 fepFilm();
 moldArranger()bigMoldTop();
 moldArranger()bigMoldBottom();
