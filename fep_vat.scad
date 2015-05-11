@@ -77,7 +77,7 @@ module moldHoles() {
 //PLA-Vat
 module pla_vat() {
     rotate([0,180,0])difference() {
-        linear_extrude(height=9)square([125,108],center=true);
+        linear_extrude(height=20)square([125,108],center=true);
         linear_extrude(height=1.5)gasket(11,5);
         linear_extrude() {
             holes();
@@ -113,7 +113,7 @@ module support_raw(x=20,y=20,d=1.1,t=0.15) {
 }
 //Middle
 module middle() {
-    rotate([0,180,0]){
+    rotate([0,0,0]){
         linear_extrude(height=3)difference() {
             square([125,108],center=true);
             offset(r=4)platformSquare();
