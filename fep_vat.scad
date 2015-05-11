@@ -19,8 +19,8 @@ module tensioner() {
     }
     intersection(){
         minkowski() {
-            linear_extrude(height=11)gasket(.1,0);
-            sphere(r=1);
+            linear_extrude(height=11)gasket(.5,0);
+            sphere(r=2);
         }
         translate([0,0,20])cube([500,500,40],center=true);
     }
