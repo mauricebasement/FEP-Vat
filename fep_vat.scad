@@ -1,4 +1,4 @@
-$fn=100;
+$fn=10;
 
 module platformSquare() {
     import("platformSquare.dxf");
@@ -19,7 +19,7 @@ module tensioner() {
     }
     intersection(){
         minkowski() {
-            linear_extrude(height=11)gasket(.5,0);
+            linear_extrude(height=14)gasket(.5,0);
             sphere(r=2);
         }
         translate([0,0,20])cube([500,500,40],center=true);
@@ -157,7 +157,7 @@ module fepFilm() {
     }
 }
 
-tensioner();    
+!tensioner();    
 moldTop();
 moldBottom();
 pla_vat();
