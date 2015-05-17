@@ -12,17 +12,21 @@ module platformHoles(r=2) {
 
 //Tensioner
 module tensioner() {
-     linear_extrude(height=1)difference() {
+     linear_extrude(height=3)difference() {
         square([125,108],center=true);
         platformSquare();
-        platformHoles(5);
+        platformHoles(2.75);
     }
-    intersection(){
-        minkowski() {
-            linear_extrude(height=16)gasket(.5,0);
-            sphere(r=2);
+    difference() {
+        scale([1,1,1])intersection(){
+            minkowski() {
+                linear_extrude(height=14)gasket(0.5,0);
+                sphere(r=8);
+            }
+            translate([0,0,20])cube([500,500,40],center=true);
         }
-        translate([0,0,20])cube([500,500,40],center=true);
+        linear_extrude(height=40)hull()gasket(0,-1);
+        linear_extrude(height=40)gasket(20,8);
     }
 }
 
@@ -34,55 +38,14 @@ module gasket(o1=10,o2=5) {
     }
 }
 
-//Gasket-Mold
-module bigMoldTop() {
-    difference() {
-        square([120,100],center=true);
-        gasket();
-        bigMoldHoles();
-    }
-}
-module bigMoldBottom() {
-    difference() {
-        square([140,100],center=true);
-        bigMoldHoles();
-    }
-}
-module bigMoldHoles() {
-   for(i=[0,180])rotate([0,0,i])translate([15,15])circle(r=1.5);
-   for(i=[-1,1])for(j=[-1,1])translate([i*54,j*44])circle(r=1.5);
-}
-module moldArranger(x=4,y=2,xt=112,yt=92) {
-    for(i=[0:x])
-        for(j=[0:y])translate([i*xt,j*yt])children();
-}
-module moldTop() {
-    difference() {
-        square([140,100],center=true);
-        gasket();
-        moldHoles();
-    }
-}
-module moldBottom() {
-    difference() {
-        square([140,100],center=true);
-        moldHoles();
-    }
-}
-module moldHoles() {
-   for(i=[-1,1])for(j=[-1,1])translate([i*15,j*15])circle(r=1.5);
-   for(i=[-1,1])for(j=[-1,1])translate([i*65,j*45])circle(r=1.5);
-}        
-
 //PLA-Vat
 module pla_vat() {
     rotate([0,180,0])difference() {
-        linear_extrude(height=20)square([125,108],center=true);
-        linear_extrude(height=1.5)gasket(11,5);
+        linear_extrude(height=5)square([125,108],center=true);
         linear_extrude() {
             holes();
             platformHoles(r=2.75);
-            offset(r=4)platformSquare();
+            offset(r=11)platformSquare();
         }
     }
     translate([0,0,0])linear_extrude(height=.6)press();
@@ -111,18 +74,19 @@ module support_raw(x=20,y=20,d=1.1,t=0.15) {
     for(i=[-1,1])for(j=[0:d:x/2])translate([i*j,0])square([t,y],center=true);
     for(i=[-1,1])for(j=[0:d:x/2])translate([0,i*j])square([x,t],center=true);
 }
+
 //Middle
 module middle() {
     rotate([0,0,0]){
         linear_extrude(height=3)difference() {
             square([125,108],center=true);
-            offset(r=4)platformSquare();
-            platformHolesTr()circle(r=5);
+            offset(r=11)platformSquare();
+            platformHolesTr()circle(r=2.75);
             holes(r=3.4,tolerance=1,fn=6);
         }
         translate([0,0,3])linear_extrude(height=2)difference() {
             square([125,108],center=true);
-            offset(r=4)platformSquare();
+            offset(r=11)platformSquare();
             platformHoles(r=2.75);
             holes();
         }
@@ -130,7 +94,7 @@ module middle() {
             square([125,108],center=true);
             offset(r=.4)press();
             offset(r=11)platformSquare();
-                offset(r=0){
+            offset(r=0){
                 holes();
                 platformHoles(r=2.75);
             }
@@ -140,14 +104,15 @@ module middle() {
 module holes(x=57,y=48,r=1.5,tolerance=1.2,fn=$fn) {
     for(i=[-1,1])for(j=[-1,1]){
         translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
-        translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
-        translate([i*x,j*y/2-j*8])circle(r=r*tolerance,$fn=fn);
+        //translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
+        //translate([i*x,j*y/2-j*9])circle(r=r*tolerance,$fn=fn);
     }
     for(i=[-1,1]){
         translate([0,i*y])circle(r=r*tolerance,$fn=fn);
         translate([i*x,0])circle(r=r*tolerance,$fn=fn);
     }
 }
+
 //FEP-Film
 module fepFilm() {
     difference(){
@@ -156,12 +121,19 @@ module fepFilm() {
         platformHoles(r=2.75);
     }
 }
-
+//Aid
+module aid() {
+    difference() {
+        fepFilm();
+        offset(r=11)platformSquare();
+    }
+}
+        
 tensioner();    
-moldTop();
-moldBottom();
 pla_vat();
 middle();
 fepFilm();
-moldArranger()bigMoldTop();
-moldArranger()bigMoldBottom();
+aid();
+
+
+            
