@@ -18,15 +18,15 @@ module tensioner() {
         platformHoles(2.75);
     }
     difference() {
-        scale([1,1,1])intersection(){
+        intersection(){
             minkowski() {
-                linear_extrude(height=14)gasket(0.5,0);
-                sphere(r=8);
+                linear_extrude(height=12)gasket(1,0);
+                scale([1,1,1.5])sphere(r=4);
             }
             translate([0,0,20])cube([500,500,40],center=true);
         }
         linear_extrude(height=40)hull()gasket(0,-1);
-        linear_extrude(height=40)gasket(20,8);
+        linear_extrude(height=40)gasket(20,6);
     }
 }
 
