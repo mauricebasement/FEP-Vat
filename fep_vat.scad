@@ -122,18 +122,32 @@ module fepFilm() {
     }
 }
 //Aid
-module aid() {
+module top() {
     difference() {
-        fepFilm();
+        difference(){
+            square([125,108],center=true);
+            holes();
+            platformHoles(r=2.75);
+        }
         offset(r=11)platformSquare();
     }
 }
-        
+module bottom() {
+    difference() {
+        difference(){
+            square([125,108],center=true);
+            platformHoles(r=4);
+        }
+        offset(r=11)platformSquare();
+    }
+}
+   
 tensioner();    
 pla_vat();
 middle();
 fepFilm();
-aid();
+top();
+bottom();
 
 
             
