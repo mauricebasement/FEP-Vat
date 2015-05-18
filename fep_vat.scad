@@ -10,8 +10,8 @@ module platformHoles(r=2) {
     platformHolesTr()circle(r);
 }
 
-//Tensioner
-module tensioner() {
+//TensionerVAT
+module tensionerVat() {
      linear_extrude(height=3)difference() {
         square([125,108],center=true);
         platformSquare();
@@ -20,26 +20,24 @@ module tensioner() {
     difference() {
         intersection(){
             minkowski() {
-                linear_extrude(height=12)gasket(1,0);
-                scale([1,1,1.5])sphere(r=4);
+                linear_extrude(height=17.6)ring(1,0);
+                scale([1,1,1])sphere(r=6);
             }
             translate([0,0,20])cube([500,500,40],center=true);
         }
-        linear_extrude(height=40)hull()gasket(0,-1);
-        linear_extrude(height=40)gasket(20,6);
+        linear_extrude(height=40)platformSquare();
+        linear_extrude(height=40)ring(20,6);
     }
 }
-
-//Gasket
-module gasket(o1=10,o2=5) {
+module ring(o1=10,o2=5) {
     difference() {
         offset(r=o1)platformSquare();
         offset(r=o2)platformSquare();
     }
 }
 
-//PLA-Vat
-module pla_vat() {
+//ClampTop
+module clampTop() {
     rotate([0,180,0])difference() {
         linear_extrude(height=5)square([125,108],center=true);
         linear_extrude() {
@@ -75,8 +73,8 @@ module support_raw(x=20,y=20,d=1.1,t=0.15) {
     for(i=[-1,1])for(j=[0:d:x/2])translate([0,i*j])square([x,t],center=true);
 }
 
-//Middle
-module middle() {
+//Clamp Bottom
+module clampBottom() {
     rotate([0,0,0]){
         linear_extrude(height=3)difference() {
             square([125,108],center=true);
@@ -104,7 +102,7 @@ module middle() {
 module holes(x=57,y=48,r=1.5,tolerance=1.2,fn=$fn) {
     for(i=[-1,1])for(j=[-1,1]){
         translate([i*x,j*y])circle(r=r*tolerance,$fn=fn);
-        //translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
+        translate([i*x/2,j*y])circle(r=r*tolerance,$fn=fn);
         //translate([i*x,j*y/2-j*9])circle(r=r*tolerance,$fn=fn);
     }
     for(i=[-1,1]){
@@ -121,33 +119,44 @@ module fepFilm() {
         platformHoles(r=2.75);
     }
 }
-//Aid
-module top() {
+//Sheets
+module sheetTop() {
     difference() {
         difference(){
             square([125,108],center=true);
-            holes();
             platformHoles(r=2.75);
         }
-        offset(r=11)platformSquare();
+        platformSquare();
     }
 }
-module bottom() {
+module sheetMiddle() {
     difference() {
         difference(){
             square([125,108],center=true);
-            platformHoles(r=4);
+            holes(r=3.5,tolerance=1);
+            platformHoles(r=2.75);
         }
-        offset(r=11)platformSquare();
+        offset(r=6.5)platformSquare();
     }
 }
-   
-tensioner();    
-pla_vat();
-middle();
+module sheetBottom() {
+    difference() {
+        difference(){
+            square([125,108],center=true);
+            platformHoles(r=4.5);
+        }
+        offset(r=9)platformSquare();
+    }
+}
+
+tensionerVat();    
+clampTop();
+clampBottom();
 fepFilm();
-top();
-bottom();
+sheetTop();
+sheetMiddle();
+sheetBottom();
+
 
 
             
