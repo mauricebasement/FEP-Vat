@@ -1,4 +1,4 @@
-$fn=100;
+$fn=200;
 
 module platformSquare() {
     import("platformSquare.dxf");
@@ -20,7 +20,7 @@ module tensionerVat() {
     difference() {
         intersection(){
             minkowski() {
-                linear_extrude(height=17.6)ring(1,0);
+                linear_extrude(height=23.2)ring(1,0);
                 scale([1,1,1])sphere(r=6);
             }
             translate([0,0,20])cube([500,500,40],center=true);
@@ -149,6 +149,18 @@ module sheetBottom() {
     }
 }
 
+module assembly() {
+    translate([0,0,18.7])rotate(a=[180,0,0])tensionerVat();    
+    translate([0,0,5.7])rotate(a=[180,0,0])clampTop();
+    clampBottom();
+    translate([0,0,5.6])linear_extrude(height=0.127)fepFilm();
+    translate([0,0,18.7])linear_extrude(height=5)sheetTop();
+    translate([0,0,10.7])linear_extrude(height=5)sheetMiddle();
+    translate([0,0,-10])linear_extrude(height=5)sheetBottom();
+    translate([0,0,-5])linear_extrude(height=5)sheetBottom();
+}
+
+*assembly();
 tensionerVat();    
 clampTop();
 clampBottom();
@@ -156,7 +168,3 @@ fepFilm();
 sheetTop();
 sheetMiddle();
 sheetBottom();
-
-
-
-            
