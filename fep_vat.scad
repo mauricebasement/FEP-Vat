@@ -147,7 +147,7 @@ module sheetTop() {
             holes(r=3.5,tolerance=1);
             platformHoles(r=2.75);
         }
-        offset(r=6.5)platformSquare();
+        offset(r=5)platformSquare();
     }
 }
 module assembly() {
