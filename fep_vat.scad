@@ -28,6 +28,7 @@ module tensionerVat() {
         linear_extrude(height=40)platformSquare();
         linear_extrude(height=40)ring(20,6);
     }
+    translate([0,0,3])linear_extrude(height=5)sheetTop();
 }
 module ring(o1=10,o2=5) {
     difference() {
@@ -121,25 +122,6 @@ module fepFilm() {
 }
 
 //Sheets
-module sheetTop() {
-    difference() {
-        difference(){
-            square([125,108],center=true);
-            platformHoles(r=2.75);
-        }
-        platformSquare();
-    }
-}
-module sheetMiddle() {
-    difference() {
-        difference(){
-            square([125,108],center=true);
-            holes(r=3.5,tolerance=1);
-            platformHoles(r=2.75);
-        }
-        offset(r=6.5)platformSquare();
-    }
-}
 module sheetBottom() {
     difference() {
         difference(){
@@ -149,23 +131,41 @@ module sheetBottom() {
         offset(r=9)platformSquare();
     }
 }
-
+module sheetMiddle() {
+    difference() {
+        difference(){
+            square([125,108],center=true);
+            platformHoles(r=2.75);
+        }
+        offset(r=9)platformSquare();
+    }
+}
+module sheetTop() {
+    difference() {
+        difference(){
+            square([125,108],center=true);
+            holes(r=3.5,tolerance=1);
+            platformHoles(r=2.75);
+        }
+        offset(r=6.5)platformSquare();
+    }
+}
 module assembly() {
-    translate([0,0,18.7])rotate(a=[180,0,0])tensionerVat();    
-    translate([0,0,5.7])rotate(a=[180,0,0])clampTop();
-    clampBottom();
-    translate([0,0,5.6])linear_extrude(height=0.127)fepFilm();
-    translate([0,0,18.7])linear_extrude(height=5)sheetTop();
-    translate([0,0,10.7])linear_extrude(height=5)sheetMiddle();
-    translate([0,0,-10])linear_extrude(height=5)sheetBottom();
-    translate([0,0,-5])linear_extrude(height=5)sheetBottom();
+    linear_extrude(height=5)sheetBottom();
+    translate([0,0,5.1])linear_extrude(height=5)sheetMiddle();
+    translate([0,0,10.2])clampBottom();
+    *translate([0,0,15.8])linear_extrude(height=0.127)fepFilm();
+    translate([0,0,16])rotate(a=[180,0,0])clampTop(); 
+    translate([0,0,29.1])rotate(a=[180,0,0])tensionerVat();  
 }
 
 *assembly();
-tensionerVat();    
-clampTop();
+sheetBottom();
+sheetMiddle();
 clampBottom();
 fepFilm();
-sheetTop();
-sheetMiddle();
-sheetBottom();
+clampTop();
+tensionerVat();    
+
+
+
